@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>CD649C76-2DCF-4C3E-BD2E-C5C05B5D248C</string>
+	<key>IDESourceControlProjectName</key>
+	<string>AppiraterOnly</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>102FCEDD2241CDAE55B808614DE3437E77A74FE1</key>
+		<string>https://github.com/hyperconnect/appirater.git</string>
+		<key>497FFDFDB4AEB909526F7F78BF8A443B04B42706</key>
+		<string>https://github.com/hyperconnect/azar-ios</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>AppiraterOnly.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>102FCEDD2241CDAE55B808614DE3437E77A74FE1</key>
+		<string>..</string>
+		<key>497FFDFDB4AEB909526F7F78BF8A443B04B42706</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/hyperconnect/appirater.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>102FCEDD2241CDAE55B808614DE3437E77A74FE1</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>497FFDFDB4AEB909526F7F78BF8A443B04B42706</string>
+			<key>IDESourceControlWCCName</key>
+			<string>..</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>102FCEDD2241CDAE55B808614DE3437E77A74FE1</string>
+			<key>IDESourceControlWCCName</key>
+			<string>appirater</string>
+		</dict>
+	</array>
+</dict>
+</plist>
