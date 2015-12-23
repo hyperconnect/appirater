@@ -49,6 +49,7 @@ NSString *const kAppiraterSignificantEventCount		= @"kAppiraterSignificantEventC
 NSString *const kAppiraterCurrentVersion			= @"kAppiraterCurrentVersion";
 NSString *const kAppiraterRatedCurrentVersion		= @"kAppiraterRatedCurrentVersion";
 NSString *const kAppiraterDeclinedToRate			= @"kAppiraterDeclinedToRate";
+NSString *const kAppiraterReminderRequestUseCount   = @"kAppiraterReminderRequestUseCount";
 NSString *const kAppiraterReminderRequestDate		= @"kAppiraterReminderRequestDate";
 
 NSString *templateReviewURL = @"itms-apps://ax.itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=APP_ID";
@@ -58,6 +59,7 @@ NSString *templateReviewURLiOS8 = @"itms-apps://itunes.apple.com/WebObjects/MZSt
 static NSString *_appId;
 static double _daysUntilPrompt = 30;
 static NSInteger _usesUntilPrompt = 20;
+static NSInteger _usesUntilReminding = 20;
 static NSInteger _significantEventsUntilPrompt = -1;
 static double _timeBeforeReminding = 1;
 static BOOL _debug = NO;
@@ -97,6 +99,10 @@ static BOOL _alwaysUseMainBundle = NO;
 
 + (void) setUsesUntilPrompt:(NSInteger)value {
     _usesUntilPrompt = value;
+}
+
++ (void) setUsesUntilReminding:(NSInteger)value {
+    _usesUntilReminding = value;
 }
 
 + (void) setSignificantEventsUntilPrompt:(NSInteger)value {
@@ -152,6 +158,33 @@ static BOOL _alwaysUseMainBundle = NO;
 }
 + (void)setAlwaysUseMainBundle:(BOOL)alwaysUseMainBundle {
     _alwaysUseMainBundle = alwaysUseMainBundle;
+}
+
+// dgoon added it
++ (BOOL)canShowPrompt {
+    return [[self sharedInstance] ratingAlertIsAppropriate] && [[self sharedInstance] ratingConditionsHaveBeenMet];
+}
+
+// dgoon added it
++ (void)userDeclined {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setBool:YES forKey:kAppiraterDeclinedToRate];
+    [userDefaults synchronize];
+}
+
+// dgoon added it
++ (void)reset {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString*)kCFBundleVersionKey];
+    [userDefaults setObject:version forKey:kAppiraterCurrentVersion];
+    [userDefaults setDouble:[[NSDate date] timeIntervalSince1970] forKey:kAppiraterFirstUseDate];
+    [userDefaults setInteger:0 forKey:kAppiraterUseCount];
+    [userDefaults setInteger:0 forKey:kAppiraterSignificantEventCount];
+    [userDefaults setBool:NO forKey:kAppiraterRatedCurrentVersion];
+    [userDefaults setBool:NO forKey:kAppiraterDeclinedToRate];
+    [userDefaults setDouble:0 forKey:kAppiraterReminderRequestDate];
+    [userDefaults setInteger:0 forKey: kAppiraterReminderRequestUseCount];
+    [userDefaults synchronize];
 }
 
 + (NSBundle *)bundle
@@ -386,7 +419,8 @@ static BOOL _alwaysUseMainBundle = NO;
 	NSInteger useCount = [userDefaults integerForKey:kAppiraterUseCount];
 	if (useCount < _usesUntilPrompt)
 		return NO;
-	
+
+
 	// check if the user has done enough significant events
 	NSInteger sigEventCount = [userDefaults integerForKey:kAppiraterSignificantEventCount];
 	if (sigEventCount < _significantEventsUntilPrompt)
@@ -398,7 +432,12 @@ static BOOL _alwaysUseMainBundle = NO;
 	NSTimeInterval timeUntilReminder = 60 * 60 * 24 * _timeBeforeReminding;
 	if (timeSinceReminderRequest < timeUntilReminder)
 		return NO;
-	
+
+    NSInteger reminderRequestUseCount   =   [userDefaults integerForKey:kAppiraterReminderRequestUseCount];
+    if (useCount < reminderRequestUseCount) {
+        return NO;
+    }
+
 	return YES;
 }
 
@@ -445,6 +484,7 @@ static BOOL _alwaysUseMainBundle = NO;
 		[userDefaults setBool:NO forKey:kAppiraterRatedCurrentVersion];
 		[userDefaults setBool:NO forKey:kAppiraterDeclinedToRate];
 		[userDefaults setDouble:0 forKey:kAppiraterReminderRequestDate];
+        [userDefaults setInteger:0 forKey: kAppiraterReminderRequestUseCount];
 	}
 	
 	[userDefaults synchronize];
@@ -482,6 +522,7 @@ static BOOL _alwaysUseMainBundle = NO;
 		[userDefaults setInteger:sigEventCount forKey:kAppiraterSignificantEventCount];
 		if (_debug)
 			NSLog(@"APPIRATER Significant event count: %@", @(sigEventCount));
+        [userDefaults synchronize];
 	}
 	else
 	{
@@ -493,6 +534,7 @@ static BOOL _alwaysUseMainBundle = NO;
 		[userDefaults setBool:NO forKey:kAppiraterRatedCurrentVersion];
 		[userDefaults setBool:NO forKey:kAppiraterDeclinedToRate];
 		[userDefaults setDouble:0 forKey:kAppiraterReminderRequestDate];
+        [userDefaults setInteger:0 forKey:kAppiraterReminderRequestUseCount];
 	}
 	
 	[userDefaults synchronize];
@@ -753,7 +795,9 @@ static BOOL _alwaysUseMainBundle = NO;
         }
         case 2:
             // remind them later
+            NSInteger useCount = [userDefaults integerForKey:kAppiraterUseCount];
             [userDefaults setDouble:[[NSDate date] timeIntervalSince1970] forKey:kAppiraterReminderRequestDate];
+            [userDefaults setInteger:(useCount + _usesUntilReminding) forKey:kAppiraterReminderRequestUseCount];
             [userDefaults synchronize];
             if(delegate && [delegate respondsToSelector:@selector(appiraterDidOptToRemindLater:)]){
                 [delegate appiraterDidOptToRemindLater:self];

@@ -194,6 +194,13 @@ extern NSString *const kAppiraterReminderRequestDate;
 */
 - (BOOL)userHasRatedCurrentVersion;
 
+
+/// dgoon:
++ (void)reset;
++ (void)setUsesUntilReminding:(NSInteger)value;
++ (BOOL)canShowPrompt;
++ (void)userDeclined;
+
 @end
 
 @interface Appirater(Configuration)
