@@ -10,8 +10,8 @@
     "Arash Payan": "arash@ara.sh"
   },
   "source": {
-    "git": "https://github.com/arashpayan/appirater.git",
-    "tag": "2.3.0"
+    "git": "https://github.com/hyperconnect/appirater.git",
+    "branch": "cocoapods"
   },
   "source_files": "*.{h,m}",
   "resource_bundles": {
