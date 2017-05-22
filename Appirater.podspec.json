@@ -16,7 +16,7 @@
   "source_files": "*.{h,m}",
   "resource_bundles": {
     "Appirater": [
-      "*.lproj"
+      "*.lproj/*.strings"
     ]
   },
   "requires_arc": true,
