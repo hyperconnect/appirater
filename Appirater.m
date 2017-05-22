@@ -194,18 +194,15 @@ static BOOL _alwaysUseMainBundle = NO;
     if (_alwaysUseMainBundle) {
         bundle = [NSBundle mainBundle];
     } else {
-        //  HOTFIX:
-        //  모듈의 번들을 자동으로 찾도록.
-        NSBundle*   selfBundle  =   [NSBundle bundleForClass: [self class]];
-        return      selfBundle;
-//        NSURL *appiraterBundleURL = [[NSBundle mainBundle] URLForResource:@"Appirater" withExtension:@"bundle"];
-//
-//        if (appiraterBundleURL) {
-//            // Appirater.bundle will likely only exist when used via CocoaPods
-//            bundle = [NSBundle bundleWithURL:appiraterBundleURL];
-//        } else {
-//            bundle = [NSBundle mainBundle];
-//        }
+			NSBundle *mainBundle = [NSBundle bundleForClass:[self class]];
+			NSURL *appiraterBundleURL = [mainBundle URLForResource:@"Appirater" withExtension:@"bundle"];
+
+			if (appiraterBundleURL) {
+					// Appirater.bundle will likely only exist when used via CocoaPods
+					bundle = [NSBundle bundleWithURL:appiraterBundleURL];
+			} else {
+					bundle = [NSBundle mainBundle];
+			}
     }
 
     return bundle;
