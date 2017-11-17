@@ -794,6 +794,7 @@ static BOOL _alwaysUseMainBundle = NO;
             break;
         }
         case 2:
+        {
             // remind them later
             NSInteger useCount = [userDefaults integerForKey:kAppiraterUseCount];
             [userDefaults setDouble:[[NSDate date] timeIntervalSince1970] forKey:kAppiraterReminderRequestDate];
@@ -803,6 +804,7 @@ static BOOL _alwaysUseMainBundle = NO;
                 [delegate appiraterDidOptToRemindLater:self];
             }
             break;
+        }
         default:
             break;
     }
